@@ -9,12 +9,14 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.prompts import PromptTemplate
+from apis.utils.prompts import rag_prompt
 
+load_dotenv()
 
 mxbai_embedder = HuggingFaceEmbeddings(model_name="mixedbread-ai/mxbai-embed-large-v1")
 
-load_dotenv()
 
 llm = ChatGoogleGenerativeAI(google_api_key=os.environ.get("GOOGLE_API_KEY"), 
                                    model="gemini-1.5-pro-latest")
@@ -32,7 +34,7 @@ vectorstore = Chroma.from_documents(documents=splits, embedding=mxbai_embedder)
 
 # Retrieve and generate using the relevant snippets of the blog
 retriever = vectorstore.as_retriever()
-prompt = hub.pull("rlm/rag-prompt")
+custom_rag_prompt = PromptTemplate.from_template(rag_prompt)
 
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
@@ -40,7 +42,7 @@ def format_docs(docs):
 # Define the RAG chain
 rag_chain = (
     {"context": retriever | format_docs, "question": RunnablePassthrough()}
-    | prompt
+    | custom_rag_prompt
     | llm
     | StrOutputParser()
 )
