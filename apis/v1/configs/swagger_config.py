@@ -5,11 +5,11 @@ swagger_config = {
     "docs_url": "/",
     "openapi_tags": [
         {
-            "name": "Document",
+            "name": "Documents",
             "description": "Operations with documents"
         },
         {
-            "name": "RAG",
+            "name": "Rag",
             "description": "Retrieve and Generate operations"
         }
     ]

@@ -11,7 +11,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate
-from apis.utils.prompts import rag_prompt
+from apis.v1.utils.prompts import rag_prompt
 
 load_dotenv()
 
@@ -22,20 +22,22 @@ llm = ChatGoogleGenerativeAI(google_api_key=os.environ.get("GOOGLE_API_KEY"),
                                    model="gemini-1.5-pro-latest")
 
 # Load and split the PDF document into pages
-pdf_loader = PyPDFLoader("LeaveNoContextBehind.pdf")
+pdf_loader = PyPDFLoader("14014749.pdf")
+# print(pdf_loader)
 pages = pdf_loader.load_and_split()
-
+# print(pages)
 # Split the pages into smaller chunks
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 splits = text_splitter.split_documents(pages)
-
+print(splits)
 # Create a vector store from the document splits
 vectorstore = Chroma.from_documents(documents=splits, embedding=mxbai_embedder)
 
 # Retrieve and generate using the relevant snippets of the blog
 retriever = vectorstore.as_retriever()
+print(retriever)
 custom_rag_prompt = PromptTemplate.from_template(rag_prompt)
-
+print(custom_rag_prompt)
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 

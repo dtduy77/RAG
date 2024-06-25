@@ -10,17 +10,22 @@ from ..schemas.document_schema import DocSchema
 #     '''
 #     return Document.objects.all()
 
+# def process_doc(file_path: AnyStr):
+#     '''
+#     Process a document.
+#     '''
+#     return splits
 
-def _upload_docs(filename: AnyStr, doc: DocSchema):
-    '''
-    Get content type of file.
-    '''
-    # Get content type of file
-    content_type = get_content_type(filename)
-    path, url = storage_db.upload(data, filename, content_type)
-    cv.update_path_url(path, url)
+# def _upload_docs(filename: AnyStr, doc: DocSchema):
+#     '''
+#     Get content type of file.
+#     '''
+#     # Get content type of file
+#     content_type = get_content_type(filename)
+#     path, url = storage_db.upload(data, filename, content_type)
+#     cv.update_path_url(path, url)
 
-    return 
+#     return 
 
 # def update_docs():
 #     '''
@@ -35,4 +40,4 @@ def _upload_docs(filename: AnyStr, doc: DocSchema):
 #     return Document.objects.delete()
 
 
-async def upload_doc()
+# async def upload_doc()
