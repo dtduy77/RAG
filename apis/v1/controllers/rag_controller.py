@@ -14,7 +14,7 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 def predict(file_path: str, question: str) -> str:
-    docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=mxbai_embedder)
+    # docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=mxbai_embedder)
 
     # Load and split the PDF document into pages
     pdf_loader = PyPDFLoader(file_path)
@@ -23,10 +23,11 @@ def predict(file_path: str, question: str) -> str:
     # Split the pages into smaller chunks
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(pages)
-
+    # print("\nSplits\n",splits)
     # Retrieve and generate using the relevant snippets of the document
-    retriever = create_vector_store(splits, docsearch)
-
+    # retriever = create_vector_store(splits, docsearch)
+    retriever = create_vector_store(splits)
+    # print("\nretriever created\n", retriever)
     custom_rag_prompt = PromptTemplate.from_template(rag_prompt)
 
     # Define the RAG chain
@@ -39,5 +40,5 @@ def predict(file_path: str, question: str) -> str:
 
     # Invoke the RAG chain with a question
     response = rag_chain.invoke(question)
-    print(response)
+    # print("Response",response)
     return response

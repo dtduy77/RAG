@@ -1,14 +1,14 @@
 from typing import Annotated
 import tempfile
 import os
-from fastapi import UploadFile,APIRouter, Depends, BackgroundTasks
+from fastapi import UploadFile,APIRouter, Depends, BackgroundTasks, Form
 from ..interfaces.rag_interface import RagResponseInterface
 from ..controllers.rag_controller import predict
 from ..utils.response_fmt import jsonResponseFmt
 router = APIRouter(prefix="/rag", tags=["Rag"])
 
 @router.post("/upload", response_model=RagResponseInterface)
-async def get_rag(doc: UploadFile, question: str):
+async def get_rag(doc: UploadFile, question: str= Form(...)):
     """
     Get response from RAG   
     """
