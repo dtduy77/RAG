@@ -2,40 +2,41 @@ from typing import Annotated
 from io import BytesIO
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, Depends, BackgroundTasks
+from ..controllers.document_controller import upload_document, get_document, update_document, delete_document
 from ..interfaces.document_interface import DocumentUploadResponseInterface
 from ..utils.response_fmt import jsonResponseFmt
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
 
 
-# @router.get("/{document_id}", response_model=DocumentResponse)
-# async def get_document(document_id: str):
-#     """
-#     Get a document
-#     """
-    
-#     return {"document_id": document_id}
+@router.get("/{document_id}", response_model=DocumentUploadResponseInterface)
+async def get_doc(document_id: str):
+    """
+    Get a document
+    """
+    document = get_document(document_id)
+    return jsonResponseFmt(document,"Document retrieved successfully")
 
 @router.post("/upload", response_model=DocumentUploadResponseInterface)
-async def upload_document():
+async def upload_doc(data: dict):
     """
     Upload a document
     """
-    
-    return jsonResponseFmt(None,"Document uploaded successfully")
+    document = upload_document(data)
+    return jsonResponseFmt(document,"Document uploaded successfully")
 
-# @router.update("/{document_id}", response_model=DocumentResponse)
-# async def update_document(document_id: str):
-#     """
-#     Update a document
-#     """
+@router.put("/{document_id}", response_model=DocumentUploadResponseInterface)
+async def update_doc(document_id: str, data: dict):
+    """
+    Update a document
+    """
+    document = update_document(document_id, data)
+    return jsonResponseFmt(document,"Document updated successfully")
 
-#     return {"document_id": document_id}
-
-# @router.delete("/{document_id}")
-# async def delete_document(document_id: str):
-#     """
-#     Delete a document
-#     """
-    
-#     return {"document_id": document_id}
+@router.delete("/{document_id}", response_model=DocumentUploadResponseInterface)
+async def delete_doc(document_id: str):
+    """
+    Delete a document
+    """
+    document = delete_document(document_id)
+    return jsonResponseFmt(document,"Document deleted successfully")

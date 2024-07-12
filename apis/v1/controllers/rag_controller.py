@@ -4,7 +4,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.prompts import PromptTemplate
 from langchain_pinecone import PineconeVectorStore
-from ..configs.llm_configs import gemini_model as llm
+from ..configs.llm_config import gemini_model as llm
 from ..configs.word_embedding_config import mxbai_embedder
 from ..controllers.vectorstore_controller import create_vector_store
 from ..utils.prompts import rag_prompt
