@@ -3,7 +3,7 @@ import streamlit as st
 import requests
 
 # Define the FastAPI endpoint URL
-FASTAPI_URL = "http://localhost:7860/api/v1/rag/upload"
+FASTAPI_URL = "http://localhost:8001/api/v1/rag/upload"
 
 st.title("Document Summarizer")
 

@@ -1,21 +1,27 @@
+import time
+from typing import AnyStr, Dict
 from ..configs.firebase_config import db
 
 class FirebaseProvider:
-    def __init__(self):
-        self.collection_name = "Documents"
+    def __init__(self, collection_name: AnyStr):
+        self.collection_name = collection_name
         self.db = db
 
-    def upload_doc(self, data):
+    def upload_doc(self, data: Dict):
         """
         Uploads a document to Firestore.
 
         :param collection_name: Name of the Firestore collection
         :param data: Dictionary containing the document data
-        :return: document is successfully uploaded, error otherwise
+        :return: document id for successfully uploaded, error otherwise
         """
         try:
-            self.db.collection(self.collection_name).add(data)
-            return f"Document uploaded successfully to collection {self.collection_name}."
+            print("Uploading document to Firestore...")
+            _s = time.perf_counter()
+            doc_ref = self.db.collection(self.collection_name).add(data)
+            _e = time.perf_counter()
+            print(f"Document uploaded successfully to document id' {doc_ref[1].id}. Time taken: {_e - _s} seconds.")
+            return doc_ref[1].id
         except Exception as e:
             return (f"An error occurred: {e}")
 
@@ -61,7 +67,7 @@ class FirebaseProvider:
             print(f"An error occurred: {e}")
             return False
         
-    def update_doc(self, document_id, data):
+    def update_doc(self, document_id: AnyStr, data: Dict):
         """
         Updates a document in Firestore by collection name and document ID.
 
@@ -75,7 +81,7 @@ class FirebaseProvider:
             doc_ref = self.db.collection(self.collection_name).document(document_id)
             doc = doc_ref.get()
             if doc.exists:
-                doc_ref.update(data)
+                doc_ref.set(data, merge=True)
                 return f"Document with ID {document_id} updated successfully in collection {self.collection_name}."
             else:
                 print(f"No document found with ID {document_id} in collection {self.collection_name}.")

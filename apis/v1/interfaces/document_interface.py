@@ -4,5 +4,5 @@ from pydantic import BaseModel, Field
 from ..schemas.document_schema import DocModel
 
 class DocumentUploadResponseInterface(BaseModel):
-    msg: str = Field(..., description="Message")
-    data: List[DocModel] = Field(..., description="Document Data")
+    msg: str = Field(..., description="Message response")
+    data: DocModel = Field(..., description="Document Data")
