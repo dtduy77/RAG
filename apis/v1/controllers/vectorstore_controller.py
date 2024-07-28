@@ -11,3 +11,11 @@ def create_vector_store(split_docs):
     retriever = vectorstore.as_retriever()
     # retriever = docsearch.as_retriever()
     return retriever
+
+def upload_documents(file_path: str):
+    # Ingest the document into the vector store
+    vectorstore_db.ingest_doc(file_path)
+
+def search(query: str):
+    # Search for the relevant snippets in the vector store
+    return vectorstore_db.search(query)
