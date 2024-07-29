@@ -1,7 +1,7 @@
 from ..utils.constants import INDEX_NAME
 from ..configs.vectorstore_config import pc
 from ..configs.llm_config import gemini_model
-from ..configs.word_embedding_config import google_embedder
+from ..configs.word_embedding_config import mxbai_embedder
 from ..utils.constants import INDEX_NAME   
 from ..utils.prompts import retrieval_qa_chat 
 from langchain_pinecone import PineconeVectorStore
@@ -10,11 +10,10 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.prompts import PromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain import hub
 
 
 class VectorStoreProvider:
-    def __init__(self, index_name=INDEX_NAME, pc=pc, embeddings=google_embedder, llm=gemini_model): 
+    def __init__(self, index_name=INDEX_NAME, pc=pc, embeddings=mxbai_embedder, llm=gemini_model): 
         self.index_name = index_name
         self.pc = pc
         self.embeddings = embeddings
