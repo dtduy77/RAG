@@ -3,7 +3,7 @@ from ..configs.vectorstore_config import pc
 from ..configs.llm_config import gemini_model
 from ..configs.word_embedding_config import google_embedder
 from ..utils.constants import INDEX_NAME   
-from ..utils.prompts import retrival_qa_chat 
+from ..utils.prompts import retrieval_qa_chat 
 from langchain_pinecone import PineconeVectorStore
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
@@ -47,8 +47,7 @@ class VectorStoreProvider:
         vectorstore = PineconeVectorStore(
             index_name=self.index_name, embedding=embeddings
         )
-
-        retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
+        retrieval_qa_chat_prompt = PromptTemplate.from_template(retrieval_qa_chat)
         combine_docs_chain = create_stuff_documents_chain(model, retrieval_qa_chat_prompt)
         retrival_chain = create_retrieval_chain(
             retriever=vectorstore.as_retriever(), combine_docs_chain=combine_docs_chain
