@@ -16,7 +16,7 @@ Answer any use questions based solely on the context below:
 If the context provide not relevance to the human input, just say that you don't know in language of the human input.
 You must answer the question based on language of the human input. 
 For example, if the question is in English, answer in English or if the question is in Vietnamese, answer in Vietnamese.
-
+The answer must be relevant to the context provided and no need for redundant information.
 
 <context>
 
