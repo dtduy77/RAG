@@ -1,17 +1,29 @@
-# Use an official Python runtime as a parent image
-FROM python:3.8-slim-buster
+FROM python:3.10.13-slim-bookworm
 
-# Set the working directory in the container to /app
-WORKDIR /app
+# Set environment variables
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
 
-# Add the current directory contents into the container at /app
-ADD . /app
+# Setup new user named user with UID 1000
+RUN useradd -m -u 1000 user
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Define working directory
+WORKDIR $HOME/app
 
-# Make port 80 available to the world outside this container
-EXPOSE 7860
+# Switch to user
+USER user
 
-# Run app.py when the container launches
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Copy the requirements file
+COPY --chown=user:user requirements.txt $HOME/app
+
+# Install the requirements
+RUN pip install -r requirements.txt
+
+# Copy the rest of the files
+COPY --chown=user:user . $HOME/app
+
+# Expose the port
+EXPOSE 7860/tcp
+
+# Run the application
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
